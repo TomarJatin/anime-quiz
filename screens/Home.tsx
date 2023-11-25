@@ -17,8 +17,88 @@ import { Fontisto } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ImgButton from "../components/ImgButton";
 import { Image } from "expo-image";
+import { useContext } from "react";
+import { DataContext } from "../contexts/DataContext";
 
-export default function Home() {
+export default function Home({ navigation }: any) {
+  const quizSection = [
+    {
+      url: "",
+      title: "Mix Questions",
+      tag: "Mix",
+      categories: [
+        {
+          img_url: "",
+          title: "Easy",
+          levels: 50
+        },
+        {
+          img_url: "",
+          title: "Medium",
+          levels: 50
+        },
+        {
+          img_url: "",
+          title: "Hard",
+          levels: 50
+        }
+      ]
+    },
+    {
+      url: "",
+      title: "Anime Quiz",
+      tag: "Anime",
+      categories: [
+        {
+          img_url: "",
+          title: "Dragon Ball",
+          levels: 50
+        },
+        {
+          img_url: "",
+          title: "One Piece",
+          levels: 50
+        },
+      ]
+    },
+    {
+      url: "",
+      title: "Quotes Quiz",
+      tag: "Quotes",
+      categories: [
+        {
+          img_url: "",
+          title: "Dragon Ball",
+          levels: 50
+        },
+        {
+          img_url: "",
+          title: "One Piece",
+          levels: 50
+        },
+      ]
+    },
+    {
+      url: "",
+      title: "Characters Quiz",
+      tag: "Characters",
+      categories: [
+        {
+          img_url: "",
+          title: "Goku",
+          levels: 50
+        },
+        {
+          img_url: "",
+          title: "Luffy",
+          levels: 50
+        },
+      ]
+    },
+  ];
+
+  const {setSelectedQuizSection} = useContext(DataContext);
+
   return (
     <SafeAreaView>
       <StatusBar
@@ -125,7 +205,7 @@ export default function Home() {
             <View
               style={{
                 paddingHorizontal: 15,
-                paddingBottom: 50
+                paddingBottom: 50,
               }}
             >
               <View
@@ -174,9 +254,12 @@ export default function Home() {
                   marginTop: 15,
                 }}
               >
-                {["1", "2", "3", "4", "5"].map((item, index) => (
+                {quizSection.map((item, index) => (
                   <TouchableOpacity
-                    onPress={() => {}}
+                    onPress={() => {
+                      setSelectedQuizSection({...item})
+                      navigation.navigate("SelectCategory");
+                    }}
                     activeOpacity={0.5}
                     style={{ marginRight: 15 }}
                     key={index}
@@ -202,9 +285,9 @@ export default function Home() {
                         <Image
                           source="https://i2.wp.com/i.imgur.com/C4EKjFB.jpg"
                           style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 25,
+                            width: 60,
+                            height: 60,
+                            borderRadius: 30,
                           }}
                         />
                         <Text
@@ -212,9 +295,11 @@ export default function Home() {
                             fontWeight: "700",
                             color: Color.textColor,
                             fontSize: FontSize.sm,
+                            width: 100,
+                            textAlign: "center",
                           }}
                         >
-                          Card Name
+                          {item?.title}
                         </Text>
                       </View>
                     </ImageBackground>
@@ -329,184 +414,175 @@ export default function Home() {
                 </TouchableOpacity>
               </View>
 
-              <View style={{flexDirection: "column", gap: 15, marginTop: 20}}>
-              <TouchableOpacity
-                onPress={() => {}}
-                activeOpacity={0.5}
-              >
-                <ImageBackground
-                  source={require("../assets/bg.png")}
-                  resizeMode="cover"
-                  style={{
-                    width: "100%",
-                    borderRadius: 14,
-                    overflow: "hidden",
-                  }}
-                >
-                  <View
+              <View style={{ flexDirection: "column", gap: 15, marginTop: 20 }}>
+                <TouchableOpacity onPress={() => {}} activeOpacity={0.5}>
+                  <ImageBackground
+                    source={require("../assets/bg.png")}
+                    resizeMode="cover"
                     style={{
-                      paddingHorizontal: 26,
-                      paddingVertical: 20,
+                      width: "100%",
+                      borderRadius: 14,
+                      overflow: "hidden",
                     }}
                   >
                     <View
                       style={{
-                        flexDirection: "row",
-                        gap: 10,
-                        alignItems: "center",
+                        paddingHorizontal: 26,
+                        paddingVertical: 20,
                       }}
                     >
-                      <Image
+                      <View
                         style={{
-                          width: 80,
-                          height: 80,
+                          flexDirection: "row",
+                          gap: 10,
+                          alignItems: "center",
                         }}
-                        contentFit="contain"
-                        source={require("../assets/robot.png")}
-                      />
-                      <View>
-                        <Text
+                      >
+                        <Image
                           style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.md,
-                            fontWeight: "800",
+                            width: 80,
+                            height: 80,
                           }}
-                        >
-                          Group Battle
-                        </Text>
-                        <Text
-                          style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.xs,
-                            fontWeight: "800",
-                            marginTop: 6,
-                          }}
-                        >
-                          Test your skills with Group Battle
-                        </Text>
+                          contentFit="contain"
+                          source={require("../assets/robot.png")}
+                        />
+                        <View>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.md,
+                              fontWeight: "800",
+                            }}
+                          >
+                            Group Battle
+                          </Text>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.xs,
+                              fontWeight: "800",
+                              marginTop: 6,
+                            }}
+                          >
+                            Test your skills with Group Battle
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {}}
-                activeOpacity={0.5}
-              >
-                <ImageBackground
-                  source={require("../assets/bg.png")}
-                  resizeMode="cover"
-                  style={{
-                    width: "100%",
-                    borderRadius: 14,
-                    overflow: "hidden",
-                  }}
-                >
-                  <View
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {}} activeOpacity={0.5}>
+                  <ImageBackground
+                    source={require("../assets/bg.png")}
+                    resizeMode="cover"
                     style={{
-                      paddingHorizontal: 26,
-                      paddingVertical: 20,
+                      width: "100%",
+                      borderRadius: 14,
+                      overflow: "hidden",
                     }}
                   >
                     <View
                       style={{
-                        flexDirection: "row",
-                        gap: 10,
-                        alignItems: "center",
+                        paddingHorizontal: 26,
+                        paddingVertical: 20,
                       }}
                     >
-                      <Image
+                      <View
                         style={{
-                          width: 80,
-                          height: 80,
+                          flexDirection: "row",
+                          gap: 10,
+                          alignItems: "center",
                         }}
-                        contentFit="contain"
-                        source={require("../assets/robot.png")}
-                      />
-                      <View>
-                        <Text
+                      >
+                        <Image
                           style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.md,
-                            fontWeight: "800",
+                            width: 80,
+                            height: 80,
                           }}
-                        >
-                          Play One v/s One
-                        </Text>
-                        <Text
-                          style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.xs,
-                            fontWeight: "800",
-                            marginTop: 6,
-                          }}
-                        >
-                          Play one v/s one battle
-                        </Text>
+                          contentFit="contain"
+                          source={require("../assets/robot.png")}
+                        />
+                        <View>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.md,
+                              fontWeight: "800",
+                            }}
+                          >
+                            Play One v/s One
+                          </Text>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.xs,
+                              fontWeight: "800",
+                              marginTop: 6,
+                            }}
+                          >
+                            Play one v/s one battle
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {}}
-                activeOpacity={0.5}
-              >
-                <ImageBackground
-                  source={require("../assets/bg.png")}
-                  resizeMode="cover"
-                  style={{
-                    width: "100%",
-                    borderRadius: 14,
-                    overflow: "hidden",
-                  }}
-                >
-                  <View
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {}} activeOpacity={0.5}>
+                  <ImageBackground
+                    source={require("../assets/bg.png")}
+                    resizeMode="cover"
                     style={{
-                      paddingHorizontal: 26,
-                      paddingVertical: 20,
+                      width: "100%",
+                      borderRadius: 14,
+                      overflow: "hidden",
                     }}
                   >
                     <View
                       style={{
-                        flexDirection: "row",
-                        gap: 10,
-                        alignItems: "center",
+                        paddingHorizontal: 26,
+                        paddingVertical: 20,
                       }}
                     >
-                      <Image
+                      <View
                         style={{
-                          width: 80,
-                          height: 80,
+                          flexDirection: "row",
+                          gap: 10,
+                          alignItems: "center",
                         }}
-                        contentFit="contain"
-                        source={require("../assets/robot.png")}
-                      />
-                      <View>
-                        <Text
+                      >
+                        <Image
                           style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.md,
-                            fontWeight: "800",
+                            width: 80,
+                            height: 80,
                           }}
-                        >
-                          Random Battle
-                        </Text>
-                        <Text
-                          style={{
-                            color: Color.textColor,
-                            fontSize: FontSize.xs,
-                            fontWeight: "800",
-                            marginTop: 6,
-                          }}
-                        >
-                          Play random battles
-                        </Text>
+                          contentFit="contain"
+                          source={require("../assets/robot.png")}
+                        />
+                        <View>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.md,
+                              fontWeight: "800",
+                            }}
+                          >
+                            Random Battle
+                          </Text>
+                          <Text
+                            style={{
+                              color: Color.textColor,
+                              fontSize: FontSize.xs,
+                              fontWeight: "800",
+                              marginTop: 6,
+                            }}
+                          >
+                            Play random battles
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
+                  </ImageBackground>
+                </TouchableOpacity>
               </View>
             </View>
           </>
@@ -514,7 +590,7 @@ export default function Home() {
         style={{
           width: "100%",
           minHeight: Dimensions.get("window").height,
-          backgroundColor: Color.backgroundColor
+          backgroundColor: Color.backgroundColor,
         }}
       />
     </SafeAreaView>
