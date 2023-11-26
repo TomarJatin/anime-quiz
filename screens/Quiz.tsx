@@ -17,22 +17,8 @@ import { Image } from "expo-image";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { quiz_questions } from "../data/random";
-
-interface QuizQuestionObj {
-  id: number;
-  quiz_img: string;
-  question: string;
-  options: string[];
-  answer: string;
-  anime: string;
-  tag: string;
-  difficulty: number;
-}
-
-interface QuizAnswerInterface {
-  id: number;
-  isCorrect: boolean;
-}
+import { QuizQuestionObj, QuizAnswerInterface } from "../types/quiz";
+// import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 
 export default function Quiz({ navigation }: any) {
   const { selectLvl } = useContext(DataContext);
@@ -42,6 +28,8 @@ export default function Quiz({ navigation }: any) {
   const [answerRight, setAnswerRight] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswerInterface[]>([]);
+  const [score, setScore] = useState(0);
+  const [questionTimer, setQuestionTimer] = useState(60);
 
   const createQuiz = () => {
     setLoading(true);
@@ -57,31 +45,62 @@ export default function Quiz({ navigation }: any) {
   const deselect = () => {
     setSelectedOptionIdx(-1);
     setAnswerRight(false);
-    if(currentQuestionIndex !== 8){
-      setCurrentQuestionIndex(prev => prev+1);
+    setQuestionTimer(60);
+    if (currentQuestionIndex !== 8) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    } else {
+      console.log("final result: ", quizAnswers.length, quizQuestions.length);
     }
-    else{
-      console.log("final result: ", quizAnswers.length)
-    }
+  };
+
+  const handleTimerOver = () => {
+    setQuizAnswers((prev) => [
+      ...prev,
+      {
+        id: quizQuestions[currentQuestionIndex].id,
+        isCorrect: false,
+        isSkipped: true,
+      },
+    ]);
+    deselect();
   };
 
   const handleAnswered = (item: string, index: number) => {
     setSelectedOptionIdx(index);
     const isCorrect = item === quizQuestions[currentQuestionIndex].answer;
+    const _score = isCorrect ? score + 4 : score - 1;
+    setScore(_score);
     setAnswerRight(isCorrect);
     setQuizAnswers((prev) => [
       ...prev,
       {
         id: quizQuestions[currentQuestionIndex].id,
         isCorrect: isCorrect,
+        isSkipped: false,
       },
     ]);
-    setTimeout(deselect, 300);
+    setTimeout(deselect, 100);
   };
 
   useEffect(() => {
     createQuiz();
   }, []);
+
+  useEffect(() => {
+    let timer: any;
+
+    if (questionTimer > 0) {
+      timer = setInterval(() => {
+        setQuestionTimer((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+    } else {
+      handleTimerOver();
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [questionTimer]);
 
   return (
     <SafeAreaView>
@@ -137,6 +156,102 @@ export default function Quiz({ navigation }: any) {
                   <Feather name="bookmark" size={24} color="white" />
                   <Ionicons name="settings-sharp" size={30} color="white" />
                 </View>
+              </View>
+
+              {/* Quiz Top */}
+              <View
+                style={{
+                  paddingVertical: 20,
+                  paddingHorizontal: 40,
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                      marginTop: 6,
+                      textAlign: "center"
+                    }}
+                  >
+                    Timer
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.md,
+                      fontWeight: "800",
+                      textAlign: "center"
+                    }}
+                  >
+                    {questionTimer} Sec
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                      marginTop: 6,
+                      textAlign: "center"
+                    }}
+                  >
+                    Question
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.md,
+                      fontWeight: "800",
+                      textAlign: "center"
+                    }}
+                  >
+                    {currentQuestionIndex+1} / 10
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                      marginTop: 6,
+                      textAlign: "center"
+                    }}
+                  >
+                    Score
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.md,
+                      fontWeight: "800",
+                      textAlign: "center"
+                    }}
+                  >
+                    {score}
+                  </Text>
+                </View>
+                {/* <CountdownCircleTimer
+        isPlaying={true}
+        duration={10}
+        colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+        colorsTime={[10, 6, 3, 0]}
+        onComplete={() => ({ shouldRepeat: true, delay: 2 })}
+        updateInterval={1}
+    >
+      {({ remainingTime, color }) => (
+        <Text style={{ color, fontSize: 40 }}>
+          {remainingTime}
+        </Text>
+      )}
+    </CountdownCircleTimer> */}
               </View>
 
               <View

@@ -1,13 +1,4 @@
-interface QuizQuestionObj{
-  id: number;
-    quiz_img: string,
-    question: string,
-    options: string[],
-    answer: string,
-    anime: string,
-    tag: string,
-    difficulty: number,
-}
+import { QuizQuestionObj } from "../types/quiz";
 
 export const quiz_questions: QuizQuestionObj[] = [
   {
