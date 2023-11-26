@@ -7,7 +7,9 @@ export const Color = {
     blue: "#7bbbce",
     starColor: "#FDCC0D",
     yellow: "#FFDF00",
-    darkBlue: "#0969ab"
+    darkBlue: "#0969ab",
+    rightAnswer: "#25FF6F",
+    wrongAnswer: "#FF4D4D"
 }
 
 export const FontSize = {

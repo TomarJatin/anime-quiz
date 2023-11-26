@@ -19,6 +19,7 @@ import { DataContext } from "../contexts/DataContext";
 import { quiz_questions } from "../data/random";
 
 interface QuizQuestionObj {
+  id: number;
   quiz_img: string;
   question: string;
   options: string[];
@@ -28,12 +29,19 @@ interface QuizQuestionObj {
   difficulty: number;
 }
 
+interface QuizAnswerInterface {
+  id: number;
+  isCorrect: boolean;
+}
+
 export default function Quiz({ navigation }: any) {
   const { selectLvl } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestionObj[]>([]);
+  const [selectedOptionIdx, setSelectedOptionIdx] = useState(-1);
+  const [answerRight, setAnswerRight] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [quizAnswers, setQuizAnswers] = useState([]);
+  const [quizAnswers, setQuizAnswers] = useState<QuizAnswerInterface[]>([]);
 
   const createQuiz = () => {
     setLoading(true);
@@ -44,6 +52,31 @@ export default function Quiz({ navigation }: any) {
       .slice(0, 10);
     setQuizQuestions([..._quiz_questions]);
     setLoading(false);
+  };
+
+  const deselect = () => {
+    setSelectedOptionIdx(-1);
+    setAnswerRight(false);
+    if(currentQuestionIndex !== 8){
+      setCurrentQuestionIndex(prev => prev+1);
+    }
+    else{
+      console.log("final result: ", quizAnswers.length)
+    }
+  };
+
+  const handleAnswered = (item: string, index: number) => {
+    setSelectedOptionIdx(index);
+    const isCorrect = item === quizQuestions[currentQuestionIndex].answer;
+    setAnswerRight(isCorrect);
+    setQuizAnswers((prev) => [
+      ...prev,
+      {
+        id: quizQuestions[currentQuestionIndex].id,
+        isCorrect: isCorrect,
+      },
+    ]);
+    setTimeout(deselect, 300);
   };
 
   useEffect(() => {
@@ -147,24 +180,37 @@ export default function Quiz({ navigation }: any) {
                 <FlatList
                   data={quizQuestions[currentQuestionIndex]?.options}
                   renderItem={({ item, index }) => (
-                    <TouchableOpacity activeOpacity={0.5} key={index} style={{
-                      flexDirection: "row",
-                      gap: 20,
-                      alignItems: "center",
-                      backgroundColor: Color.card,
-                      padding: 10,
-                      borderRadius: 10,
-                      marginBottom: 15
-                    }}>
-                      <View style={{
-                        borderRadius: 8,
-                        backgroundColor: Color.backgroundColor,
-                        flexDirection: "column",
+                    <TouchableOpacity
+                      onPress={() => handleAnswered(item, index)}
+                      activeOpacity={0.5}
+                      key={index}
+                      style={{
+                        flexDirection: "row",
+                        gap: 20,
                         alignItems: "center",
-                        justifyContent: "center",
-                        width: 30,
-                        height: 30
-                      }}>
+                        backgroundColor:
+                          selectedOptionIdx === -1 ||
+                          index !== selectedOptionIdx
+                            ? Color.card
+                            : answerRight
+                            ? Color.rightAnswer
+                            : Color.wrongAnswer,
+                        padding: 10,
+                        borderRadius: 10,
+                        marginBottom: 15,
+                      }}
+                    >
+                      <View
+                        style={{
+                          borderRadius: 8,
+                          backgroundColor: Color.backgroundColor,
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: 30,
+                          height: 30,
+                        }}
+                      >
                         <Text
                           style={{
                             color: Color.textColor,
@@ -187,7 +233,7 @@ export default function Quiz({ navigation }: any) {
                     </TouchableOpacity>
                   )}
                   style={{
-                    marginTop: 30
+                    marginTop: 30,
                   }}
                 />
               </View>
