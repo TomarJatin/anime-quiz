@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import SelectCategory from "./SelectCategory";
 import SelectLevel from "./SelectLevel";
 import Quiz from "./Quiz";
+import Result from "./Result";
+import Stats from "./Stats";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -31,6 +33,16 @@ export default function Navigation() {
         <Stack.Screen
           name="Quiz"
           component={Quiz}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Result"
+          component={Result}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Stats"
+          component={Stats}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

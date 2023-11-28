@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  ActivityIndicator,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +22,7 @@ import { QuizQuestionObj, QuizAnswerInterface } from "../types/quiz";
 // import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 
 export default function Quiz({ navigation }: any) {
-  const { selectLvl } = useContext(DataContext);
+  const { selectLvl, setResultQuizQuestions, setResultScore, setResultQuizAnswers } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestionObj[]>([]);
   const [selectedOptionIdx, setSelectedOptionIdx] = useState(-1);
@@ -46,10 +47,13 @@ export default function Quiz({ navigation }: any) {
     setSelectedOptionIdx(-1);
     setAnswerRight(false);
     setQuestionTimer(60);
-    if (currentQuestionIndex !== 8) {
+    if (currentQuestionIndex !== 9) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      console.log("final result: ", quizAnswers.length, quizQuestions.length);
+      setResultQuizQuestions([...quizQuestions]);
+      setResultQuizAnswers([...quizAnswers]);
+      setResultScore(score);
+      navigation.navigate("Result");
     }
   };
 
@@ -166,7 +170,7 @@ export default function Quiz({ navigation }: any) {
                   width: "100%",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  flexDirection: "row"
+                  flexDirection: "row",
                 }}
               >
                 <View>
@@ -176,7 +180,7 @@ export default function Quiz({ navigation }: any) {
                       fontSize: FontSize.xs,
                       fontWeight: "500",
                       marginTop: 6,
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     Timer
@@ -186,7 +190,7 @@ export default function Quiz({ navigation }: any) {
                       color: Color.textColor,
                       fontSize: FontSize.md,
                       fontWeight: "800",
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     {questionTimer} Sec
@@ -199,7 +203,7 @@ export default function Quiz({ navigation }: any) {
                       fontSize: FontSize.xs,
                       fontWeight: "500",
                       marginTop: 6,
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     Question
@@ -209,10 +213,10 @@ export default function Quiz({ navigation }: any) {
                       color: Color.textColor,
                       fontSize: FontSize.md,
                       fontWeight: "800",
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
-                    {currentQuestionIndex+1} / 10
+                    {currentQuestionIndex + 1} / {quizQuestions.length}
                   </Text>
                 </View>
                 <View>
@@ -222,7 +226,7 @@ export default function Quiz({ navigation }: any) {
                       fontSize: FontSize.xs,
                       fontWeight: "500",
                       marginTop: 6,
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     Score
@@ -232,7 +236,7 @@ export default function Quiz({ navigation }: any) {
                       color: Color.textColor,
                       fontSize: FontSize.md,
                       fontWeight: "800",
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     {score}
@@ -360,7 +364,11 @@ export default function Quiz({ navigation }: any) {
             backgroundColor: Color.backgroundColor,
           }}
         />
-      ) : null}
+      ) : (
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <ActivityIndicator size="large" style={{ marginTop: 50 }} />
+        </View>
+      )}
     </SafeAreaView>
   );
 }

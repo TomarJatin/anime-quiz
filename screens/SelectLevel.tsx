@@ -29,6 +29,8 @@ export default function SelectLevel({ navigation }: any) {
     navigation.navigate("Quiz");
   }
 
+  
+
   return (
     <SafeAreaView>
       <FlatList
