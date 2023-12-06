@@ -9,7 +9,12 @@ export const Color = {
     yellow: "#FFDF00",
     darkBlue: "#0969ab",
     rightAnswer: "#25FF6F",
-    wrongAnswer: "#FF4D4D"
+    wrongAnswer: "#FF4D4D",
+    popUpBlue1: "#1856b5",
+    popUpBlue2: "#1f3571",
+    popUpBorder: "#57a1eb",
+    redButtonbg: "#f36158",
+    redButtonTxt: "#a01f11"
 }
 
 export const FontSize = {
