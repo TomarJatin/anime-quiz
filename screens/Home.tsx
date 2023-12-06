@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  Switch,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,12 +16,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import ImgButton from "../components/ImgButton";
 import Modal from "react-native-modal";
 import { Image } from "expo-image";
 import { useContext, useState } from "react";
 import GeneralButton from "../components/Button";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { DataContext } from "../contexts/DataContext";
 
 export default function Home({ navigation }: any) {
@@ -100,6 +102,7 @@ export default function Home({ navigation }: any) {
     },
   ];
   const [open, setOpen] = useState("");
+  const [isEnabled, setIsEnabled] = useState(false);
 
   const { setSelectedQuizSection } = useContext(DataContext);
 
@@ -608,65 +611,358 @@ export default function Home({ navigation }: any) {
         onSwipeComplete={() => setOpen("")}
         onBackdropPress={() => setOpen("")}
         onBackButtonPress={() => setOpen("")}
-        style={{
-        }}
+        style={{}}
       >
         {open === "menu" && (
           <LinearGradient
-          colors={[Color.popUpBlue1, Color.popUpBlue2]}
+            colors={[Color.popUpBlue1, Color.popUpBlue2]}
             style={{
               backgroundColor: Color.backgroundColor,
               padding: 22,
               borderRadius: 20,
               borderColor: Color.popUpBorder,
-              borderWidth: 3
+              borderWidth: 3,
             }}
           >
-            <View style={{
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 16
-            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                position: "absolute",
+                width: "100%",
+                marginTop: -15,
+                marginLeft: 35,
+              }}
+            >
+              <TouchableOpacity onPress={() => setOpen("")} activeOpacity={0.5}>
+                <Entypo
+                  name="squared-cross"
+                  style={{
+                    backgroundColor: Color.redButtonTxt,
+                    borderRadius: 6,
+                  }}
+                  size={30}
+                  color={Color.redButtonbg}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 16,
+              }}
+            >
               <GeneralButton
-                  title="Settings"
-                  width={"80%"}
-                  paddingVertical={8}
-                  onPress={() => {
+                title="Settings"
+                width={"80%"}
+                paddingVertical={8}
+                onPress={() => setOpen("settings")}
+                borderRadius={8}
+              />
+              <GeneralButton
+                title="Stats"
+                width={"80%"}
+                paddingVertical={8}
+                onPress={() => {
+                  setOpen("stats");
+                }}
+                borderRadius={8}
+              />
+              <GeneralButton
+                title="Bookmark"
+                width={"80%"}
+                paddingVertical={8}
+                onPress={() => {}}
+                borderRadius={8}
+              />
+              <GeneralButton
+                title="Leaderboard"
+                width={"80%"}
+                paddingVertical={8}
+                onPress={() => {}}
+                borderRadius={8}
+              />
+              <GeneralButton
+                title="Instructions"
+                width={"80%"}
+                paddingVertical={8}
+                onPress={() => {}}
+                borderRadius={8}
+              />
+            </View>
+          </LinearGradient>
+        )}
+
+        {open === "stats" && (
+          <LinearGradient
+            colors={[Color.popUpBlue1, Color.popUpBlue2]}
+            style={{
+              backgroundColor: Color.backgroundColor,
+              padding: 22,
+              borderRadius: 20,
+              borderColor: Color.popUpBorder,
+              borderWidth: 3,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                position: "absolute",
+                width: "100%",
+                marginTop: -15,
+                marginLeft: 35,
+              }}
+            >
+              <TouchableOpacity onPress={() => setOpen("")} activeOpacity={0.5}>
+                <Entypo
+                  name="squared-cross"
+                  style={{
+                    backgroundColor: Color.redButtonTxt,
+                    borderRadius: 6,
                   }}
-                  borderRadius={8}
+                  size={30}
+                  color={Color.redButtonbg}
                 />
-                <GeneralButton
-                  title="Stats"
-                  width={"80%"}
-                  paddingVertical={8}
-                  onPress={() => {
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text
+                style={{
+                  color: Color.textColor,
+                  fontSize: FontSize.md,
+                  fontWeight: "800",
+                  textAlign: "center",
+                }}
+              >
+                Statistics
+              </Text>
+              <View style={{ marginTop: 20 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
-                  borderRadius={8}
-                />
-                <GeneralButton
-                  title="Bookmark"
-                  width={"80%"}
-                  paddingVertical={8}
-                  onPress={() => {
+                >
+                  <View>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.xs,
+                        fontWeight: "500",
+                        textAlign: "center",
+                      }}
+                    >
+                      Coins Earned
+                    </Text>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.md,
+                        fontWeight: "800",
+                        textAlign: "center",
+                      }}
+                    >
+                      20
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.xs,
+                        fontWeight: "500",
+                        textAlign: "center",
+                      }}
+                    >
+                      Your Score
+                    </Text>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.md,
+                        fontWeight: "800",
+                        textAlign: "center",
+                      }}
+                    >
+                      323
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.xs,
+                        fontWeight: "500",
+                        textAlign: "center",
+                      }}
+                    >
+                      Points Gained
+                    </Text>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontSize: FontSize.md,
+                        fontWeight: "800",
+                        textAlign: "center",
+                      }}
+                    >
+                      2
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{ marginTop: 20, flexDirection: "column", gap: 10 }}
+                >
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Total Questions: 24
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Correct Questions: 24
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontSize: FontSize.xs,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Incorrect Questions: 24
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+        )}
+
+        {open === "settings" && (
+          <LinearGradient
+            colors={[Color.popUpBlue1, Color.popUpBlue2]}
+            style={{
+              backgroundColor: Color.backgroundColor,
+              padding: 22,
+              borderRadius: 20,
+              borderColor: Color.popUpBorder,
+              borderWidth: 3,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                position: "absolute",
+                width: "100%",
+                marginTop: -15,
+                marginLeft: 35,
+              }}
+            >
+              <TouchableOpacity onPress={() => setOpen("")} activeOpacity={0.5}>
+                <Entypo
+                  name="squared-cross"
+                  style={{
+                    backgroundColor: Color.redButtonTxt,
+                    borderRadius: 6,
                   }}
-                  borderRadius={8}
+                  size={30}
+                  color={Color.redButtonbg}
                 />
-                <GeneralButton
-                  title="Leaderboard"
-                  width={"80%"}
-                  paddingVertical={8}
-                  onPress={() => {
-                  }}
-                  borderRadius={8}
-                />
-                <GeneralButton
-                  title="Instructions"
-                  width={"80%"}
-                  paddingVertical={8}
-                  onPress={() => {
-                  }}
-                  borderRadius={8}
-                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text
+                style={{
+                  color: Color.textColor,
+                  fontSize: FontSize.md,
+                  fontWeight: "800",
+                  textAlign: "center",
+                }}
+              >
+                Settings
+              </Text>
+              <View style={{ marginTop: 20, flexDirection: "column"}}>
+              <View style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}>
+                  <Text
+                style={{
+                  color: Color.textColor,
+                  fontSize: FontSize.sm,
+                  fontWeight: "600",
+                }}
+              >
+               Sound
+              </Text>
+              <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={() => setIsEnabled(prev => !prev)}
+        value={isEnabled}
+      />
+                </View>
+                
+                <View style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}>
+                  <Text
+                style={{
+                  color: Color.textColor,
+                  fontSize: FontSize.sm,
+                  fontWeight: "600",
+                }}
+              >
+               Vibration
+              </Text>
+              <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={() => setIsEnabled(prev => !prev)}
+        value={isEnabled}
+      />
+                </View>
+                <View style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}>
+                  <Text
+                style={{
+                  color: Color.textColor,
+                  fontSize: FontSize.sm,
+                  fontWeight: "600",
+                }}
+              >
+               Background Music
+              </Text>
+              <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={() => setIsEnabled(prev => !prev)}
+        value={isEnabled}
+      />
+                </View>
+              </View>
             </View>
           </LinearGradient>
         )}
